@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="app_name">Converter</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_converter">Converter</string>
+    <color name="myColor">#F5F5F5</color>
+    <color name="textColor">#FF0000</color>
+    <string name="cups">Cups:</string>
+    <string name="equals">equals</string>
+    <string name="tablespoons">Tablespoons:</string>
+
+</resources>
