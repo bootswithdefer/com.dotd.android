@@ -3,6 +3,7 @@
     <string name="app_name">Novels</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_novels">NovelsActivity</string>
+    <string name="title_activity_novels">Novel Reader</string>
+    <string name="title_activity_file_picker">Choose Novel</string>
 
 </resources>

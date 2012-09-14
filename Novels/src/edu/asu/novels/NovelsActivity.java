@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
@@ -20,10 +21,16 @@ public class NovelsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_novels);
+
+        String file = null;
+        
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+        	file = extras.getString("file");
         
         txtBig = (TextView) findViewById(R.id.textViewBig);
         
-        loadText("Alice.txt");
+        loadText(file);
     }
 
     @Override
@@ -33,7 +40,9 @@ public class NovelsActivity extends Activity {
     }
     
     private void loadText(String path) {
-    	txtBig.setText(readStringFromAsset(this, path));
+    	txtBig.setMovementMethod(new ScrollingMovementMethod());
+    	if (path != null)
+    	  txtBig.setText(readStringFromAsset(this, path));
     }
     
     static public String readStringFromAsset(Context ctx, String path) {
