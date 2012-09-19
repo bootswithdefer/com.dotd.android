@@ -1,3 +1,6 @@
+// Jesse DeFer
+// 9/18/2012
+
 package edu.asu.novels;
 
 import java.io.IOException;
@@ -25,9 +28,11 @@ public class FilePickerActivity extends Activity implements OnItemClickListener 
         
         ListView listViewFilePicker = (ListView) findViewById(R.id.listViewFilePicker);
         
+        // Get handle to raw assets
         AssetManager am = this.getAssets();
         try {
-        	String files[] = am.list("books");
+        	String files[] = am.list("books"); // get list of assets from books folder
+        	// set up list view with list of files
         	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, files);
         	listViewFilePicker.setAdapter(adapter);
         	listViewFilePicker.setOnItemClickListener(this);
@@ -41,7 +46,8 @@ public class FilePickerActivity extends Activity implements OnItemClickListener 
         getMenuInflater().inflate(R.menu.activity_file_picker, menu);
         return true;
     }
-    
+
+    // On click of an item in the list view call the NovelsActivity to display the file
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     	String file = ((TextView)view).getText().toString();
     	

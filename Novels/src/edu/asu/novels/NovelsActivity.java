@@ -1,3 +1,6 @@
+// Jesse DeFer
+// 9/18/2012
+
 package edu.asu.novels;
 
 import java.io.BufferedReader;
@@ -15,7 +18,7 @@ import android.widget.TextView;
 
 public class NovelsActivity extends Activity {
 
-	private TextView txtBig;
+	private TextView txtBig; // full screen TextView
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,7 @@ public class NovelsActivity extends Activity {
 
         String file = null;
         
+        // Get name of file passed from the FilePickerActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         	file = extras.getString("file");
@@ -39,12 +43,14 @@ public class NovelsActivity extends Activity {
         return true;
     }
     
+    // Load text from the file and display it in a TextView
     private void loadText(String path) {
     	txtBig.setMovementMethod(new ScrollingMovementMethod());
     	if (path != null)
     	  txtBig.setText(readStringFromAsset(this, path));
     }
     
+    // Read a file and return it's contents as a String
     static public String readStringFromAsset(Context ctx, String path) {
 	    StringBuilder contents = new StringBuilder();
 	    String sep = System.getProperty("line.separator");
