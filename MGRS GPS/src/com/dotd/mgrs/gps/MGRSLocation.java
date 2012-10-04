@@ -31,6 +31,6 @@ public class MGRSLocation extends Location {
 	}
 
 	public String toMGRSString() {
-		return getMGRSgzd() + getMGRSsquare() + " " + getMGRSnorthing() + " " + getMGRSeasting();
+		return String.format("%s %s %05d %05d", getMGRSgzd(), getMGRSsquare(), getMGRSnorthing(), getMGRSeasting());
 	}
 }
