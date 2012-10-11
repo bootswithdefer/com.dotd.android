@@ -6,58 +6,53 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 
 public class MGRSLocationListener extends Service implements LocationListener {
-	private final IBinder mBinder = new MyBinder();
-	private MGRSLocation current;
-
-	MGRSLocationListener() {
-		current = new MGRSLocation("MGRS");
+	
+	private void sendBroadcast(String message) {
+		Intent intent = new Intent("location");
+		intent.putExtra("MGRS",  message);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 	}
-
+	
 	public void onLocationChanged(Location location) {
-		current = new MGRSLocation(location);
+		MGRSLocation mgrs = new MGRSLocation(location);
+		
+		sendBroadcast(mgrs.toMGRSString());
 	}
 
 	public void onProviderDisabled(String provider) {
 		// TODO Auto-generated method stub
+		sendBroadcast("providerDisabled");
 
 	}
 
 	public void onProviderEnabled(String provider) {
 		// TODO Auto-generated method stub
+		sendBroadcast("providerEnabled");
 
 	}
 
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
+		sendBroadcast("statusChanged");
 
-	}
-
-	public String getMGRSString() {
-		return current.toMGRSString();
 	}
 
 	public int onStartCommand(Intent intent, int flags, int startId) {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+		sendBroadcast("Acquiring...");
 
 		return Service.START_NOT_STICKY;
 	}
 	
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
-		return mBinder;
-	}
-
-	public class MyBinder extends Binder {
-		MGRSLocationListener getService() {
-			return MGRSLocationListener.this;
-		}
+		return null;
 	}
 }

@@ -1,9 +1,12 @@
 package com.dotd.mgrs.gps;
 
 import android.location.Location;
+import uk.me.jstott.jcoord.LatLng;
+import uk.me.jstott.jcoord.MGRSRef;
 
 public class MGRSLocation extends Location {
-
+	MGRSRef mgrsref;
+	
 	public MGRSLocation(String provider) {
 		super(provider);
 		// TODO Auto-generated constructor stub
@@ -11,26 +14,28 @@ public class MGRSLocation extends Location {
 
 	public MGRSLocation(Location l) {
 		super(l);
-		// TODO Auto-generated constructor stub
+
+		LatLng latlng = new LatLng(l.getLatitude(), l.getLongitude());
+		mgrsref = latlng.toMGRSRef();
 	}
 
 	public String getMGRSgzd() {
-		return "xx";
+		return String.format("%d%c", mgrsref.getUtmZoneNumber(), mgrsref.getUtmZoneChar());
 	}
 	
 	public String getMGRSsquare() {
-		return "xx";
+		return String.format("%c%c", mgrsref.getEastingID(), mgrsref.getNorthingID());
 	}
 	
 	public int getMGRSnorthing() {
-		return 0;
+		return mgrsref.getNorthing();
 	}
 	
 	public int getMGRSeasting() {
-		return 0;
+		return mgrsref.getEasting();
 	}
 
 	public String toMGRSString() {
-		return String.format("%s %s %05d %05d", getMGRSgzd(), getMGRSsquare(), getMGRSnorthing(), getMGRSeasting());
+		return String.format("%s %s %05d %05d", getMGRSgzd(), getMGRSsquare(), getMGRSeasting(), getMGRSnorthing());
 	}
 }
