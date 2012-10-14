@@ -19,23 +19,23 @@ public class MGRSLocation extends Location {
 		mgrsref = latlng.toMGRSRef();
 	}
 
-	public String getMGRSgzd() {
+	public String getGZD() {
 		return String.format("%d%c", mgrsref.getUtmZoneNumber(), mgrsref.getUtmZoneChar());
 	}
 	
-	public String getMGRSsquare() {
+	public String getSquare() {
 		return String.format("%c%c", mgrsref.getEastingID(), mgrsref.getNorthingID());
 	}
 	
-	public int getMGRSnorthing() {
+	public int getNorthing() {
 		return mgrsref.getNorthing();
 	}
 	
-	public int getMGRSeasting() {
+	public int getEasting() {
 		return mgrsref.getEasting();
 	}
 
-	public String toMGRSString() {
-		return String.format("%s %s %05d %05d", getMGRSgzd(), getMGRSsquare(), getMGRSeasting(), getMGRSnorthing());
+	public String toString() {
+		return String.format("%s %s %05d %05d", getGZD(), getSquare(), getEasting(), getNorthing());
 	}
 }
