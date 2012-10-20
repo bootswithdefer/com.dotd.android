@@ -17,5 +17,6 @@
     <string name="gps_provider_enabled_acquiring">GPS Provider Enabled, Acquiring...</string>
     <string name="gps_status_changed">GPS Status Changed.</string>
     <string name="acquiring">Acquiring...</string>
+    <string name="gridscale">Grid Scale</string>
 
 </resources>

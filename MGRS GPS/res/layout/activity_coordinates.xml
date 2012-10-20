@@ -21,10 +21,10 @@
         android:text="@string/default_coordinates"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="32sp" />
-
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
         android:layout_weight="0.43" >
 
         <LinearLayout
@@ -99,13 +99,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Blank" />
         </LinearLayout>
-
+
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:contentDescription="@string/gridscale"
             android:scaleType="matrix"
             android:src="@drawable/grid" />
 
