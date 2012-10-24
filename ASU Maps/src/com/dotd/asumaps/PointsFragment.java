@@ -41,7 +41,7 @@ public class PointsFragment extends ListFragment {
 			fragment.setText(item);
 		} else {
 			Intent intent = new Intent(getActivity().getApplicationContext(),
-					MapActivity.class);
+					ASUMapActivity.class);
 			intent.putExtra("text", item);
 			startActivity(intent);
 		}

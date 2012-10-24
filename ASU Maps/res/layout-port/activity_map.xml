@@ -5,10 +5,10 @@
 
 <fragment
         android:id="@+id/mapFragment"
-        android:name="com.example.asumaps.fragment_map"
+        android:name="com.dotd.asumaps.fragment_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.example.asumaps.MapFragment"
+        class="com.dotd.asumaps.MapFragment"
         tools:layout="@layout/fragment_map" />
 
 

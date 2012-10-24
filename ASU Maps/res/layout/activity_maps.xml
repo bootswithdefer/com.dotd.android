@@ -5,23 +5,23 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     tools:context=".MapsActivity" >
-
+
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.asumaps.fragment_list"
+        android:name="com.dotd.asumaps.fragment_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="3"
-        class="com.example.asumaps.PointsFragment"
+        class="com.dotd.asumaps.PointsFragment"
         tools:layout="@layout/fragment_list" />
-
+
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.example.asumaps.fragment_map"
+        android:name="com.dotd.asumaps.fragment_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        class="com.example.asumaps.MapFragment"
+        class="com.dotd.asumaps.MapFragment"
         tools:layout="@layout/fragment_map" />
 
 </LinearLayout>

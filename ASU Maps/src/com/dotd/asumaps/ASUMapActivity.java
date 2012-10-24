@@ -1,12 +1,14 @@
 package com.dotd.asumaps;
 
+import com.google.android.maps.MapActivity;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.Menu;
 import android.widget.TextView;
 
-public class MapActivity extends Activity {
+public class ASUMapActivity extends MapActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -22,8 +24,8 @@ public class MapActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			String s = extras.getString("text");
-			TextView view = (TextView) findViewById(R.id.mapText);
-			view.setText(s);
+//			TextView view = (TextView) findViewById(R.id.mapText);
+//			view.setText(s);
 		}
 	}
 
@@ -31,5 +33,11 @@ public class MapActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_map, menu);
 		return true;
+	}
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

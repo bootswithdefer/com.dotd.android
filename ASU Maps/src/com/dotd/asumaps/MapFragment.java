@@ -1,5 +1,7 @@
 package com.dotd.asumaps;
 
+import com.google.android.maps.MapView;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,13 +13,13 @@ public class MapFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_map,
-				container, false);
+		View view = inflater.inflate(R.layout.fragment_map, container, false);
+
 		return view;
 	}
 
 	public void setText(String item) {
-		TextView view = (TextView) getView().findViewById(R.id.mapText);
-		view.setText(item);
+		// TextView view = (TextView) getView().findViewById(R.id.mapText);
+		// view.setText(item);
 	}
 }

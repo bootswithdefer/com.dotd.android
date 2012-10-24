@@ -1,5 +1,10 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Light" />
+    <style name="AppTheme" parent="android:Theme.Holo" />
 
+    <style name="mapViewStyle">
+        <item name="android:apiKey">0S59rhW5AVhMWKss_1YBsuHEccQ8l5Ta1LtiFNw</item>
+        <item name="android:clickable">true</item>
+        <item name="android:enabled">true</item>
+    </style>
 </resources>

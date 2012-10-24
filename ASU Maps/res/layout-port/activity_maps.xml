@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MapsActivity" >
-
+
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.asumaps.fragment_list"
+        android:name="com.dotd.asumaps.fragment_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.example.asumaps.PointsFragment"
+        class="com.dotd.asumaps.PointsFragment"
         tools:layout="@layout/fragment_list" />
 
 </LinearLayout>
