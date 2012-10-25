@@ -1,14 +1,17 @@
 package com.dotd.asumaps;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapView;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.Menu;
-import android.widget.TextView;
 
-public class ASUMapActivity extends MapActivity {
+public class MapsActivityPortrait extends MapActivity {
+	public List<PointData> points = new ArrayList<PointData>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -19,13 +22,23 @@ public class ASUMapActivity extends MapActivity {
 			return;
 		}
 
+		points = ASUMapUtil.createPoints();
+
 		setContentView(R.layout.activity_map);
+
+		MapView mapView = (MapView) findViewById(R.id.mapview);
+		mapView.setBuiltInZoomControls(true);
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			String s = extras.getString("text");
-//			TextView view = (TextView) findViewById(R.id.mapText);
-//			view.setText(s);
+			int point = extras.getInt("point");
+
+			if (point >= points.size())
+				ASUMapUtil.centerOnASU(mapView);
+			else
+				ASUMapUtil.centerOn(mapView, points.get(point));
+		} else {
+			ASUMapUtil.centerOnASU(mapView);
 		}
 	}
 
@@ -37,7 +50,6 @@ public class ASUMapActivity extends MapActivity {
 
 	@Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
