@@ -1,7 +1,5 @@
 package com.dotd.asumaps;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
@@ -15,9 +13,7 @@ public class PointsFragment extends ListFragment {
 	OnPointSelectedListener mCallback;
 
 	public interface OnPointSelectedListener {
-		public void onPointSelected(int point);
-
-		public List<PointData> getPoints();
+		public void onPointSelected(PointData point);
 	}
 
 	@Override
@@ -45,7 +41,7 @@ public class PointsFragment extends ListFragment {
 		View view = inflater.inflate(R.layout.fragment_list, container, false);
 
 		ArrayAdapter<PointData> adapter = new PointsArrayAdapter(getActivity(),
-				android.R.layout.simple_list_item_1, mCallback.getPoints());
+				android.R.layout.simple_list_item_1, new PlacesManager());
 		setListAdapter(adapter);
 
 		return view;
@@ -53,6 +49,7 @@ public class PointsFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		mCallback.onPointSelected(position);
+		PointData point = (PointData) getListView().getItemAtPosition(position);
+		mCallback.onPointSelected(point);
 	}
 }

@@ -1,33 +1,25 @@
 package com.dotd.asumaps;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 
 public class MapsActivityLandscape extends MapActivity implements
 		PointsFragment.OnPointSelectedListener {
-	public List<PointData> points = new ArrayList<PointData>();
+	private boolean addedOverlays = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		points = ASUMapUtil.createPoints();
-
 		setContentView(R.layout.activity_maps);
-
-		// Bundle extras = getIntent().getExtras();
-		// if (extras != null) {
-		// String s = extras.getString("text");
-		// TextView view = (TextView) findViewById(R.id.mapText);
-		// view.setText(s);
-		// }
 	}
 
 	@Override
@@ -42,7 +34,7 @@ public class MapsActivityLandscape extends MapActivity implements
 	}
 
 	@Override
-	public void onPointSelected(int point) {
+	public void onPointSelected(PointData point) {
 		MapFragment fragment = (MapFragment) getFragmentManager()
 				.findFragmentById(R.id.mapview);
 
@@ -50,10 +42,12 @@ public class MapsActivityLandscape extends MapActivity implements
 			MapView mapView = (MapView) findViewById(R.id.mapview);
 			mapView.setBuiltInZoomControls(true);
 
-			if (point >= points.size())
-				ASUMapUtil.centerOnASU(mapView);
-			else
-				ASUMapUtil.centerOn(mapView, points.get(point));
+			if (!addedOverlays) {
+				addOverlays();
+				addedOverlays = true;
+			}
+			
+			ASUMapUtil.centerOn(mapView, point);
 		} else {
 			Intent intent = new Intent(this, MapsActivityPortrait.class);
 			intent.putExtra("point", point);
@@ -61,7 +55,19 @@ public class MapsActivityLandscape extends MapActivity implements
 		}
 	}
 
-	public List<PointData> getPoints() {
-		return points;
+	private void addOverlays() {
+		MapView mapView = (MapView) findViewById(R.id.mapview);
+		mapView.setBuiltInZoomControls(true);
+
+		// Add overlay for points
+		List<Overlay> mapOverlays = mapView.getOverlays();
+		for (PointData point : new PlacesManager()) {
+			Drawable drawable = this.getResources().getDrawable(
+					point.getDrawableId());
+			ASUItemizedOverlay itemizedoverlay = new ASUItemizedOverlay(
+					drawable, this);
+			itemizedoverlay.addOverlay(point.getOverlayItem());
+			mapOverlays.add(itemizedoverlay);
+		}
 	}
 }

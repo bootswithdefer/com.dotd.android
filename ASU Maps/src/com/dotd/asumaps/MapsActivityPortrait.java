@@ -1,17 +1,17 @@
 package com.dotd.asumaps;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
 
 import android.os.Bundle;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.view.Menu;
 
 public class MapsActivityPortrait extends MapActivity {
-	public List<PointData> points = new ArrayList<PointData>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -22,24 +22,16 @@ public class MapsActivityPortrait extends MapActivity {
 			return;
 		}
 
-		points = ASUMapUtil.createPoints();
-
 		setContentView(R.layout.activity_map);
 
 		MapView mapView = (MapView) findViewById(R.id.mapview);
 		mapView.setBuiltInZoomControls(true);
 
-		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			int point = extras.getInt("point");
+		addOverlays();
 
-			if (point >= points.size())
-				ASUMapUtil.centerOnASU(mapView);
-			else
-				ASUMapUtil.centerOn(mapView, points.get(point));
-		} else {
-			ASUMapUtil.centerOnASU(mapView);
-		}
+		PointData point = (PointData) getIntent().getSerializableExtra("point");
+
+		ASUMapUtil.centerOn(mapView, point);
 	}
 
 	@Override
@@ -51,5 +43,21 @@ public class MapsActivityPortrait extends MapActivity {
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
+	}
+
+	private void addOverlays() {
+		MapView mapView = (MapView) findViewById(R.id.mapview);
+		mapView.setBuiltInZoomControls(true);
+
+		// Add overlay for points
+		List<Overlay> mapOverlays = mapView.getOverlays();
+		for (PointData point : new PlacesManager()) {
+			Drawable drawable = this.getResources().getDrawable(
+					point.getDrawableId());
+			ASUItemizedOverlay itemizedoverlay = new ASUItemizedOverlay(
+					drawable, this);
+			itemizedoverlay.addOverlay(point.getOverlayItem());
+			mapOverlays.add(itemizedoverlay);
+		}
 	}
 }
