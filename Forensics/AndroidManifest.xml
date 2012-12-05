@@ -33,8 +33,17 @@
             </intent-filter>
         </activity>
 
-        <service android:name="LocationService" >
+        <service android:name="com.dotd.forensics.LocationService" >
         </service>
+
+        <activity
+            android:name="com.dotd.forensics.PhotoListActivity"
+            android:label="@string/title_activity_photo_list"
+            android:parentActivityName="android.app.ListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.app.ListActivity" />
+        </activity>
     </application>
 
 </manifest>

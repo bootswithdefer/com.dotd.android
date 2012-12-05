@@ -1,12 +1,23 @@
 package com.dotd.forensics;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -18,6 +29,8 @@ import android.content.IntentFilter;
 import android.hardware.Camera;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -71,6 +84,26 @@ public class PhotoActivity extends Activity {
 		camera = Camera.open();
 		if (camera == null)
 			camera = Camera.open(Camera.getNumberOfCameras() - 1);
+	}
+
+	public static final int MENU_LIST = Menu.FIRST;
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(Menu.NONE, MENU_LIST, Menu.NONE, "List Photos");
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case MENU_LIST:
+			Intent intent = new Intent(this, PhotoListActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -236,7 +269,7 @@ public class PhotoActivity extends Activity {
 							+ String.format("%.6f", latitude) + "&longitude="
 							+ String.format("%.6f", longitude));
 			// TODO handle response
-			
+
 			camera.startPreview();
 		}
 
@@ -249,7 +282,7 @@ public class PhotoActivity extends Activity {
 
 	Runnable m_updateCounter = new Runnable() {
 		public void run() {
-			textView_timestamp.setText("test");
+			// textView_timestamp.setText("test");
 			time_handler.postDelayed(m_updateCounter, 1000);
 		}
 	};
@@ -263,4 +296,40 @@ public class PhotoActivity extends Activity {
 			longitude = intent.getDoubleExtra("longitude", 0.0);
 		}
 	};
+
+	private class HTTPRequestTask extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... uri) {
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpResponse response;
+			String responseString = null;
+			try {
+				response = httpclient.execute(new HttpGet(uri[0]));
+				StatusLine statusLine = response.getStatusLine();
+				if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+					out.close();
+					responseString = out.toString();
+				} else {
+					// Closes the connection.
+					response.getEntity().getContent().close();
+					throw new IOException(statusLine.getReasonPhrase());
+				}
+			} catch (ClientProtocolException e) {
+				// TODO Handle problems..
+			} catch (IOException e) {
+				// TODO Handle problems..
+			}
+			return responseString;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			// Do anything with response..
+		}
+	}
+
 }
