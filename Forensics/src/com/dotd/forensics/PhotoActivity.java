@@ -268,7 +268,7 @@ public class PhotoActivity extends Activity {
 
 			new HTTPRequestTask()
 					.execute("http://dotd.com/forensics/submit?md5="
-							+ hexString + "&latitude="
+							+ hexString + "&timestamp=" + date + "&latitude="
 							+ String.format("%.6f", latitude) + "&longitude="
 							+ String.format("%.6f", longitude));
 			// TODO handle response

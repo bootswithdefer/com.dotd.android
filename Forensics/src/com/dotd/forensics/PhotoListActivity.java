@@ -9,6 +9,7 @@ import android.app.ListActivity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 public class PhotoListActivity extends ListActivity {
 	private SimpleAdapter adapter;
@@ -20,9 +21,9 @@ public class PhotoListActivity extends ListActivity {
 
 		datasource = new PhotoDataSource(this);
 		datasource.open();
-		
+
 		List<PhotoData> photos = datasource.getAllPhotos();
-		
+
 		datasource.close();
 
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
@@ -45,8 +46,15 @@ public class PhotoListActivity extends ListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
+		Object o = this.getListAdapter().getItem(position);
+
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> item = (HashMap<String, String>) o;
+
+		String filename = item.get("filename");
+
+		Toast.makeText(this, filename, Toast.LENGTH_LONG).show();
 	}
 
 }
