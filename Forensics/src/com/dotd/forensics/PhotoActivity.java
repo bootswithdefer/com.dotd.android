@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -51,6 +52,8 @@ public class PhotoActivity extends Activity {
 
 	private double latitude = 0.0;
 	private double longitude = 0.0;
+	private String currentDate;
+	private String coordinates;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -270,6 +273,13 @@ public class PhotoActivity extends Activity {
 							+ String.format("%.6f", longitude));
 			// TODO handle response
 
+			PhotoDataSource datasource = new PhotoDataSource(
+					getApplicationContext());
+			datasource.open();
+			datasource.createPhoto(filename, "MD5", hexString.toString(),
+					coordinates, currentDate);
+			datasource.close();
+
 			camera.startPreview();
 		}
 
@@ -282,7 +292,11 @@ public class PhotoActivity extends Activity {
 
 	Runnable m_updateCounter = new Runnable() {
 		public void run() {
-			// textView_timestamp.setText("test");
+			currentDate = DateFormat.getDateTimeInstance().format(new Date());
+			textView_timestamp.setText(currentDate);
+
+			coordinates = String.format("%.6f, %.6f", latitude, longitude);
+
 			time_handler.postDelayed(m_updateCounter, 1000);
 		}
 	};

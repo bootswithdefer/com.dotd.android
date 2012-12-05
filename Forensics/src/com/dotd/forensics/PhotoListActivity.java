@@ -2,6 +2,7 @@ package com.dotd.forensics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.os.Bundle;
 import android.app.ListActivity;
@@ -11,19 +12,27 @@ import android.widget.SimpleAdapter;
 
 public class PhotoListActivity extends ListActivity {
 	private SimpleAdapter adapter;
-	private ArrayList<HashMap<String, String>> list;
+	public PhotoDataSource datasource;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		list = new ArrayList<HashMap<String, String>>();
+		datasource = new PhotoDataSource(this);
+		datasource.open();
+		
+		List<PhotoData> photos = datasource.getAllPhotos();
+		
+		datasource.close();
+
+		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 		HashMap<String, String> item;
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < photos.size(); i++) {
+			PhotoData photo = photos.get(i);
 			item = new HashMap<String, String>();
-			item.put("filename", "aaaaaaaaa");
-			item.put("timestamp", "bbbbbbbbbb");
-			item.put("coordinates", "ccccccccc");
+			item.put("filename", photo.getFilename());
+			item.put("timestamp", photo.getTimestamp());
+			item.put("coordinates", photo.getCoordinates());
 			list.add(item);
 		}
 
