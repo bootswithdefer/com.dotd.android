@@ -6,10 +6,12 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.app.ListActivity;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 public class PhotoListActivity extends ListActivity {
 	private SimpleAdapter adapter;
@@ -31,6 +33,7 @@ public class PhotoListActivity extends ListActivity {
 		for (int i = 0; i < photos.size(); i++) {
 			PhotoData photo = photos.get(i);
 			item = new HashMap<String, String>();
+			item.put("id", Long.toString(photo.getId()));
 			item.put("filename", photo.getFilename());
 			item.put("timestamp", photo.getTimestamp());
 			item.put("coordinates", photo.getCoordinates());
@@ -44,6 +47,26 @@ public class PhotoListActivity extends ListActivity {
 		setListAdapter(adapter);
 	}
 
+	public static final int MENU_PHOTO = Menu.FIRST;
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(Menu.NONE, MENU_PHOTO, Menu.NONE, "Take Photos");
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case MENU_PHOTO:
+			Intent intent = new Intent(this, PhotoActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
@@ -52,9 +75,14 @@ public class PhotoListActivity extends ListActivity {
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> item = (HashMap<String, String>) o;
 
-		String filename = item.get("filename");
+		Intent intent = new Intent(this, PhotoDetailActivity.class);
+		intent.putExtra("id", Long.valueOf(item.get("id")));
+		startActivity(intent);
 
-		Toast.makeText(this, filename, Toast.LENGTH_LONG).show();
+		/*
+		 * String filename = item.get("filename"); Toast.makeText(this,
+		 * filename, Toast.LENGTH_LONG).show();
+		 */
 	}
 
 }

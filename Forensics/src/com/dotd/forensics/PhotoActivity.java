@@ -228,7 +228,7 @@ public class PhotoActivity extends Activity {
 
 			}
 
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 			String date = dateFormat.format(new Date());
 			String photoFile = "ForensicPhoto_" + date + ".jpg";
 
@@ -267,9 +267,13 @@ public class PhotoActivity extends Activity {
 			}
 
 			new HTTPRequestTask()
-					.execute("http://dotd.com/forensics/submit?md5="
-							+ hexString + "&timestamp=" + date + "&latitude="
-							+ String.format("%.6f", latitude) + "&longitude="
+					.execute("http://dotd.com/forensics/submit.php?hashtype=md5&hash="
+							+ hexString
+							+ "&timestamp="
+							+ date
+							+ "&latitude="
+							+ String.format("%.6f", latitude)
+							+ "&longitude="
 							+ String.format("%.6f", longitude));
 			// TODO handle response
 

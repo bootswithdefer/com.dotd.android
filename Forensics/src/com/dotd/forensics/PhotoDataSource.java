@@ -65,6 +65,23 @@ public class PhotoDataSource {
 	 * PhotoSQLiteHelper.COLUMN_ID + " = " + id, null); }
 	 */
 
+	public PhotoData getPhoto(long id) {
+		String[] args = new String[] { Long.toString(id) };
+
+		Cursor cursor = database.query(PhotoSQLiteHelper.TABLE_PHOTOS,
+				allColumns, PhotoSQLiteHelper.COLUMN_ID + "=?", args, null,
+				null, null);
+		cursor.moveToFirst();
+
+		PhotoData photo = null;
+		while (!cursor.isAfterLast()) {
+			photo = cursorToPhoto(cursor);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return photo;
+	}
+
 	public List<PhotoData> getAllPhotos() {
 		List<PhotoData> photos = new ArrayList<PhotoData>();
 

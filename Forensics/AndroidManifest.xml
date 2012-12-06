@@ -44,6 +44,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.app.ListActivity" />
         </activity>
+        <activity
+            android:name="com.dotd.forensics.PhotoDetailActivity"
+            android:label="@string/title_activity_photo_detail"
+            android:parentActivityName="com.dotd.forensics.PhotoListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dotd.forensics.PhotoListActivity" />
+        </activity>
     </application>
 
 </manifest>
