@@ -9,24 +9,29 @@ public class PhotoSQLiteHelper extends SQLiteOpenHelper {
 	public static final String TABLE_PHOTOS = "photos";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_FILENAME = "filename";
+	public static final String COLUMN_THUMBNAIL = "thumbnail";
 	public static final String COLUMN_MD5 = "md5";
 	public static final String COLUMN_SHA1 = "sha1";
 	public static final String COLUMN_SHA256 = "sha256";
 	public static final String COLUMN_COORDINATES = "coordinates";
 	public static final String COLUMN_TIMESTAMP = "timestamp";
 	public static final String COLUMN_SUBMITTED = "submitted";
+	
+	public static final int PHOTO_UNSUBMITTED = 0;
+	public static final int PHOTO_SUBMITTED = 1;
 
 	private static final String DATABASE_NAME = "ForensicPhotos.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	// Database creation sql statement
 	private static final String DATABASE_CREATE = "create table "
 			+ TABLE_PHOTOS + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_FILENAME
-			+ " text not null, " + COLUMN_MD5 + " text, " + COLUMN_SHA1
-			+ " text, " + COLUMN_SHA256 + " text, " + COLUMN_COORDINATES
-			+ " text not null, " + COLUMN_TIMESTAMP + " text not null, "
-			+ COLUMN_SUBMITTED + " integer)";
+			+ " text not null, " + COLUMN_THUMBNAIL + " text not null, "
+			+ COLUMN_MD5 + " text, " + COLUMN_SHA1 + " text, " + COLUMN_SHA256
+			+ " text, " + COLUMN_COORDINATES + " text not null, "
+			+ COLUMN_TIMESTAMP + " text not null, " + COLUMN_SUBMITTED
+			+ " integer)";
 
 	public PhotoSQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,6 +48,11 @@ public class PhotoSQLiteHelper extends SQLiteOpenHelper {
 				"Upgrading database from version " + oldVer + " to " + newVer
 						+ ".");
 		// handle database upgrades
+		if (oldVer == 1) {
+			String stmt = "ALTER TABLE " + TABLE_PHOTOS + " ADD COLUMN "
+					+ COLUMN_THUMBNAIL + " text";
+			database.execSQL(stmt);
+		}
 	}
 
 }

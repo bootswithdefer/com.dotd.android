@@ -3,6 +3,7 @@ package com.dotd.forensics;
 public class PhotoData {
 	private long id;
 	private String filename;
+	private String thumbnail;
 	private String md5;
 	private String sha1;
 	private String sha256;
@@ -72,6 +73,14 @@ public class PhotoData {
 
 	public void setSubmitted(int submitted) {
 		this.submitted = submitted;
+	}
+
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 
 }

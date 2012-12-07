@@ -14,7 +14,8 @@ public class PhotoDataSource {
 	private SQLiteDatabase database;
 	private PhotoSQLiteHelper dbHelper;
 	private String[] allColumns = { PhotoSQLiteHelper.COLUMN_ID,
-			PhotoSQLiteHelper.COLUMN_FILENAME, PhotoSQLiteHelper.COLUMN_MD5,
+			PhotoSQLiteHelper.COLUMN_FILENAME,
+			PhotoSQLiteHelper.COLUMN_THUMBNAIL, PhotoSQLiteHelper.COLUMN_MD5,
 			PhotoSQLiteHelper.COLUMN_SHA1, PhotoSQLiteHelper.COLUMN_SHA256,
 			PhotoSQLiteHelper.COLUMN_COORDINATES,
 			PhotoSQLiteHelper.COLUMN_TIMESTAMP,
@@ -32,11 +33,13 @@ public class PhotoDataSource {
 		dbHelper.close();
 	}
 
-	public PhotoData createPhoto(String filename, String hashType, String hash,
-			String coordinates, String timestamp) {
+	public PhotoData createPhoto(String filename, String thumbnail,
+			String hashType, String hash, String coordinates, String timestamp,
+			int submitted) {
 		ContentValues values = new ContentValues();
 
 		values.put(PhotoSQLiteHelper.COLUMN_FILENAME, filename);
+		values.put(PhotoSQLiteHelper.COLUMN_THUMBNAIL, thumbnail);
 		values.put(PhotoSQLiteHelper.COLUMN_COORDINATES, coordinates);
 		values.put(PhotoSQLiteHelper.COLUMN_TIMESTAMP, timestamp);
 		values.put(PhotoSQLiteHelper.COLUMN_SUBMITTED, 0);
@@ -46,6 +49,7 @@ public class PhotoDataSource {
 			values.put(PhotoSQLiteHelper.COLUMN_SHA1, hash);
 		else if (hashType.equalsIgnoreCase("SHA256"))
 			values.put(PhotoSQLiteHelper.COLUMN_SHA256, hash);
+		values.put(PhotoSQLiteHelper.COLUMN_SUBMITTED, submitted);
 
 		long insertId = database.insert(PhotoSQLiteHelper.TABLE_PHOTOS, null,
 				values);
@@ -58,12 +62,39 @@ public class PhotoDataSource {
 		return newPhoto;
 	}
 
-	/*
-	 * public void deletePhoto(PhotoData photo) { long id = photo.getId();
-	 * System.out.println("Photo deleted with id: " + id);
-	 * database.delete(PhotoSQLiteHelper.TABLE_PHOTOS,
-	 * PhotoSQLiteHelper.COLUMN_ID + " = " + id, null); }
-	 */
+	public void deletePhoto(PhotoData photo) {
+		long id = photo.getId();
+		System.out.println("Photo deleted with id: " + id);
+		database.delete(PhotoSQLiteHelper.TABLE_PHOTOS,
+				PhotoSQLiteHelper.COLUMN_ID + " = " + id, null);
+	}
+
+	public void deleteAllPhotos() {
+		database.delete(PhotoSQLiteHelper.TABLE_PHOTOS, null, null);
+	}
+
+	public boolean markSubmitted(String hashtype, String hash) {
+		String col;
+		if (hashtype.equalsIgnoreCase("MD5"))
+			col = PhotoSQLiteHelper.COLUMN_MD5;
+		else if (hashtype.equalsIgnoreCase("SHA1"))
+			col = PhotoSQLiteHelper.COLUMN_SHA1;
+		else if (hashtype.equalsIgnoreCase("SHA256"))
+			col = PhotoSQLiteHelper.COLUMN_SHA256;
+		else
+			return false;
+
+		ContentValues args = new ContentValues();
+		args.put(PhotoSQLiteHelper.COLUMN_SUBMITTED,
+				PhotoSQLiteHelper.PHOTO_SUBMITTED);
+
+		int rows = database.update(PhotoSQLiteHelper.TABLE_PHOTOS, args, col
+				+ "=?", new String[] { hash });
+
+		if (rows > 0)
+			return true;
+		return false;
+	}
 
 	public PhotoData getPhoto(long id) {
 		String[] args = new String[] { Long.toString(id) };
@@ -103,12 +134,13 @@ public class PhotoDataSource {
 		PhotoData photo = new PhotoData();
 		photo.setId(cursor.getLong(0));
 		photo.setFilename(cursor.getString(1));
-		photo.setMd5(cursor.getString(2));
-		photo.setSha1(cursor.getString(3));
-		photo.setSha256(cursor.getString(4));
-		photo.setCoordinates(cursor.getString(5));
-		photo.setTimestamp(cursor.getString(6));
-		photo.setSubmitted(cursor.getInt(7));
+		photo.setThumbnail(cursor.getString(2));
+		photo.setMd5(cursor.getString(3));
+		photo.setSha1(cursor.getString(4));
+		photo.setSha256(cursor.getString(5));
+		photo.setCoordinates(cursor.getString(6));
+		photo.setTimestamp(cursor.getString(7));
+		photo.setSubmitted(cursor.getInt(8));
 		return photo;
 	}
 

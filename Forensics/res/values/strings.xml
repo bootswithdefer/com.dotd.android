@@ -9,5 +9,7 @@
     <string name="title_activity_photo_detail">PhotoDetailActivity</string>
     <string name="waiting_gps">Waiting for GPS...</string>
     <string name="waiting_time">Waiting for time...</string>
+    <string name="thumbnail">Thumbnail</string>
+    <string name="status_icon">Status</string>
 
 </resources>

@@ -27,6 +27,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -230,13 +233,13 @@ public class PhotoActivity extends Activity {
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 			String date = dateFormat.format(new Date());
-			String photoFile = "ForensicPhoto_" + date + ".jpg";
 
+			String photoFile = "ForensicPhoto_" + date + ".jpg";
 			String filename = pictureFileDir.getPath() + File.separator
 					+ photoFile;
-
 			File pictureFile = new File(filename);
 
+			// save original image
 			try {
 				FileOutputStream fos = new FileOutputStream(pictureFile);
 				fos.write(imageData);
@@ -244,6 +247,31 @@ public class PhotoActivity extends Activity {
 			} catch (Exception error) {
 				Toast.makeText(getApplicationContext(),
 						"Image could not be saved: " + error.toString(),
+						Toast.LENGTH_LONG).show();
+				return;
+			}
+
+			photoFile = "TForensicPhoto_" + date + ".jpg";
+			String thumbname = pictureFileDir.getPath() + File.separator
+					+ photoFile;
+
+			// save 10% size thumbnail
+			try {
+				Bitmap src = BitmapFactory.decodeFile(filename);
+
+				pictureFile = new File(thumbname);
+
+				int width = (int) (src.getWidth() * 0.1f + 0.5f);
+				int height = (int) (src.getHeight() * 0.1f + 0.5f);
+				Bitmap dst = Bitmap
+						.createScaledBitmap(src, width, height, true);
+
+				FileOutputStream fos = new FileOutputStream(pictureFile);
+				dst.compress(CompressFormat.JPEG, 100, fos);
+				fos.close();
+			} catch (Exception error) {
+				Toast.makeText(getApplicationContext(),
+						"Thumbnail could not be saved: " + error.toString(),
 						Toast.LENGTH_LONG).show();
 				return;
 			}
@@ -280,8 +308,9 @@ public class PhotoActivity extends Activity {
 			PhotoDataSource datasource = new PhotoDataSource(
 					getApplicationContext());
 			datasource.open();
-			datasource.createPhoto(filename, "MD5", hexString.toString(),
-					coordinates, currentDate);
+			datasource.createPhoto(filename, thumbname, "MD5",
+					hexString.toString(), coordinates, currentDate,
+					PhotoSQLiteHelper.PHOTO_UNSUBMITTED);
 			datasource.close();
 
 			camera.startPreview();
@@ -336,9 +365,11 @@ public class PhotoActivity extends Activity {
 					throw new IOException(statusLine.getReasonPhrase());
 				}
 			} catch (ClientProtocolException e) {
-				// TODO Handle problems..
+				Toast.makeText(getApplicationContext(), "Protocol Exception!",
+						Toast.LENGTH_LONG).show();
 			} catch (IOException e) {
-				// TODO Handle problems..
+				Toast.makeText(getApplicationContext(), "IO Exception!",
+						Toast.LENGTH_LONG).show();
 			}
 			return responseString;
 		}
@@ -346,7 +377,27 @@ public class PhotoActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			// Do anything with response..
+
+			String[] temp;
+			temp = result.split(" ");
+
+			if (!temp[0].equals("SUCCESS")) {
+				Toast.makeText(getApplicationContext(),
+						"Failed to submit photo!", Toast.LENGTH_LONG).show();
+				return;
+			}
+
+			PhotoDataSource datasource = new PhotoDataSource(
+					getApplicationContext());
+			datasource.open();
+
+			if (!datasource.markSubmitted(temp[1], temp[2])) {
+				Toast.makeText(getApplicationContext(),
+						"Failed to mark photo as submitted!", Toast.LENGTH_LONG)
+						.show();
+			}
+
+			datasource.close();
 		}
 	}
 

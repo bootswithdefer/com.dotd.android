@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:columnCount="3"
+    android:rowCount="3" >
+
+    <ImageView
+        android:id="@+id/imageView_thumb"
+        android:layout_gravity="fill"
+        android:layout_rowSpan="3"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/thumbnail"
+        android:src="@drawable/green_check" />
+
+    <ImageView
+        android:id="@+id/imageView_status_icon"
+        android:layout_gravity="fill"
+        android:layout_rowSpan="3"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/status_icon"
+        android:src="@drawable/red_x" />
 
     <TextView
         android:id="@+id/line_1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:layout_gravity="fill"
         android:textStyle="italic" />
 
     <TextView
         android:id="@+id/line_2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12sp" />
+        android:layout_gravity="fill" />
 
     <TextView
         android:id="@+id/line_3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="10sp"
+        android:layout_gravity="fill"
         android:textStyle="italic" />
 
-</LinearLayout>
+</GridLayout>

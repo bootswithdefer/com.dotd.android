@@ -26,9 +26,9 @@ public class SDImageLoader {
 
 	private Bitmap loadImageFromSDCard(String filePath) {
 		BitmapFactory.Options bfo = new BitmapFactory.Options();
-		bfo.inSampleSize = 4;
-		bfo.outWidth = 150;
-		bfo.outHeight = 150;
+		bfo.inSampleSize = 2;
+		//bfo.outWidth = 640;
+		//bfo.outHeight = 480;
 		Bitmap photo = BitmapFactory.decodeFile(filePath, bfo);
 		return photo;
 	}
