@@ -1,14 +1,18 @@
 package com.dotd.forensics;
 
+import com.samcoles.asyncsdcardimageloaderexample.SDImageLoader;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PhotoDetailActivity extends Activity {
 	private PhotoData photo = null;
+	private final SDImageLoader mImageLoader = new SDImageLoader();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,10 @@ public class PhotoDetailActivity extends Activity {
 			tv.setText(photo.getTimestamp());
 			tv = (TextView) findViewById(R.id.textView_coordinates);
 			tv.setText(photo.getCoordinates());
+
+			ImageView iv = (ImageView) findViewById(R.id.imageView_photo);
+			mImageLoader.load(this, photo.getFilename(), iv,
+					R.drawable.ic_launcher);
 		}
 	}
 

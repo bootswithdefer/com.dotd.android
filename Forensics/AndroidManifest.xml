@@ -39,7 +39,8 @@
         <activity
             android:name="com.dotd.forensics.PhotoListActivity"
             android:label="@string/title_activity_photo_list"
-            android:parentActivityName="android.app.ListActivity" >
+            android:parentActivityName="android.app.ListActivity"
+            android:screenOrientation="landscape" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.app.ListActivity" />
@@ -47,7 +48,8 @@
         <activity
             android:name="com.dotd.forensics.PhotoDetailActivity"
             android:label="@string/title_activity_photo_detail"
-            android:parentActivityName="com.dotd.forensics.PhotoListActivity" >
+            android:parentActivityName="com.dotd.forensics.PhotoListActivity"
+            android:screenOrientation="landscape" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dotd.forensics.PhotoListActivity" />

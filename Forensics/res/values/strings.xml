@@ -7,5 +7,7 @@
     <string name="take_photo">Take Photo</string>
     <string name="title_activity_photo_list">PhotoListActivity</string>
     <string name="title_activity_photo_detail">PhotoDetailActivity</string>
+    <string name="waiting_gps">Waiting for GPS...</string>
+    <string name="waiting_time">Waiting for time...</string>
 
 </resources>

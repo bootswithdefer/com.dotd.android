@@ -29,7 +29,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:background="@color/silver"
-        android:text="@string/take_photo" />
+        android:text="@string/waiting_gps" />
 
     <TextView
         android:id="@+id/textView_timestamp"
@@ -38,6 +38,6 @@
         android:layout_above="@+id/textView_coordinates"
         android:layout_alignParentLeft="true"
         android:background="@color/silver"
-        android:text="@string/take_photo" />
+        android:text="@string/waiting_time" />
 
 </RelativeLayout>
